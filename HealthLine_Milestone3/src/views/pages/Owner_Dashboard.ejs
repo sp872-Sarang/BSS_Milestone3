@@ -175,7 +175,6 @@
                                                     <td width=“5%“><i class=“fa fa-bars”></i></td>
                                                     <!-- <div class="control" id = "myData" > -->
                                                     <div id="myData"></div>
-                                                        <div>random</div>
                                                         <!-- <button type="button" class="button is-link is-fullwidth has-text-weight-medium is-medium is-success" onclick="storeData()">Send Question</button> -->
                                                         <button type="submit" id="faqbutton" class="button is-link is-fullwidth has-text-weight-medium is-medium is-success">FAQ</button>
                                                     </div>
@@ -241,9 +240,8 @@
 // }
 document.getElementById("faqbutton").addEventListener("click", createfn, false);
 
-async function createfn()
+function createfn()
 {
-            // console.log(indexs.db);
             // const snapshot = await db.collection('faq').get();
             // console.log("testing here");
             //
@@ -259,7 +257,7 @@ async function createfn()
             },
             body: JSON.stringify({
                 collectionName : 'faq',//'TEST',
-                documentId : "test23", //'justanotheremail@email.com',
+                // documentId : "test23", //'justanotheremail@email.com',
                 }
             ) // add the users ID token here
             }).then(res => res.json())
@@ -273,12 +271,13 @@ async function createfn()
                 console.log(res.req_data.email);
                 console.log(res);
             var mainContainer = document.getElementById("myData");
-            // for (var i = 0; i < res.req_data.length; i++) {
-            mainContainer.innerHTML = '<br>' + "query:" + res.req_data.query
-            console.log("query:" + res.req_data.query);
+            for (var i = 0; i < res.req_data.length; i++) {
+                var div = document.createElement("div");
+                mainContainer.innerHTML += '<br>' + "query:" + res.req_data[i].query
+                console.log("query:" + res.req_data[i].query);
                 //tr.innerHTML = "query:"; //+ res[i].inputQuery;
-                // mainContainer.appendChild(div);
-            // }
+                mainContainer.appendChild(div);
+            }
             });
 }
 

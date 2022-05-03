@@ -38,6 +38,7 @@ app.use("/static", express.static("static/"));
 // index page
 app.get("/", function (req, res) {
   res.render("pages/index");
+  // res.render('pages/Owner_Dashboard', {db: db} );
 });
 
 app.get("/sign_in", function (req, res) {
@@ -103,6 +104,7 @@ app.get("/sessionLogout", (req, res) => {
 //firestore
 
 const db = admin.firestore()
+// res.render('pages/Owner_Dashboard', {db: db} );
 
 // module.exports = {
 //   createUser: async (id, email, role) => {
@@ -132,7 +134,7 @@ async function storeData(req){
 
   uuid = req.body.inputEmail.toString()
 
-  const writeResult = await 
+  const writeResult = await
   db.collection('faq').doc(uuid).set({
   name: req.body.inputName.toString(),
   email: req.body.inputEmail.toString(),
@@ -150,14 +152,24 @@ app.post('/insert_data', async (request,response) =>{
 async function getFirestore(req){
 
   const collection_name = req.body.collectionName.toString()
-  const document_id = req.body.documentId.toString()
+  // const document_id = req.body.documentId.toString()
   // const firestore_con  = await admin.firestore();
-  const writeResult = await db.collection(collection_name).doc(document_id).get().then(doc => {
-  if (!doc.exists) { console.log('No such document!'); }
-  else {return doc.data();}})
-  .catch(err => { console.log('Error getting document', err);});
-  return writeResult
+  try {
+    const snapshot = await db.collection(collection_name).get();
+    const data = []
+    snapshot.forEach(doc => {
+      data.push(doc.data())
+    })
+    // if (!doc.exists) {
+    //   console.log('No such document!');
+    // } else {
+    //   return doc.data();
+    // }
+    return data
+  } catch (err) {
+    console.log('Error getting document', err);
   }
+}
 
 async function getUserById (id) {
       const snapshot = await db.collection('faq').get()
@@ -169,19 +181,19 @@ app.post('/get_data', async (request,response) =>{
   var data = await getFirestore(request);
   console.log("Before Request");
   console.log(request.body.collectionName.toString());
-  console.log(request.body.documentId.toString());
+  // console.log(request.body.documentId.toString());
   console.log(data);
   console.log("Request is Incoming");
 
-      
+
   const responseData = {
     collection_name : request.body.collectionName.toString(),
-    document_id : request.body.documentId.toString(),
+    // document_id : request.body.documentId.toString(),
     req_data :data,
     status : 200
   }
   response.setHeader('Content-Type', 'application/json');
-  
+
   // body: JSON.stringify({
   //   collectionName : 'faq',//'TEST',
   //   documentId : 'test23', //'justanotheremail@email.com',
@@ -190,6 +202,8 @@ app.post('/get_data', async (request,response) =>{
   response.send(jsonContent);
 
   });
+
+
 
 //app.listen(port);
 exports.helloWorld = functions.https.onRequest(app);
