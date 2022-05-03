@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head') %>
+</head>
+
+<body>
+  <header>
+    <%- include('../partials/nav') %>
+  </header>
+
+ <section class="section has-background-success">
+    <div class="container">
+      <div class="is-vcentered columns">
+        <div class="column is-full">
+          <h2 class="has-text-white has-text-centered mt-2 mb-3 is-size-1 is-size-3-mobile has-text-weight-bold">How can we help?</h2>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <section class="hero is-fullheight">
+    <div class="hero-body"> -->
+        <section class="container has-text-centered">
+            <div class="columns is-8 is-variable ">
+                <div class="column is-two-third">
+                    <div class="box content">
+                        <article class="post has-text-left">
+                            <h4>Do you have covid testing services?</h4>
+                            <div class="media">
+                                <div class="media-left">
+                                </div>
+                                <div class="media-content">
+                                    <div class="content has-text-left">
+                                        <p>
+                                            Yes - we have covid testing services. <br><br>
+                                        </p>
+
+                                    </div>
+                                </div>
+                                <div class="media-right">
+                                    <span class="has-text-grey-light"><i class="fa fa-comments"></i> 1</span>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="post has-text-left">
+                            <h4>Can I call for a same day appointment for an evaluation and diagnosis?</h4>
+                            <div class="media">
+                                <div class="media-left">
+                        
+                                </div>
+                                <div class="media-content">
+                                    <div class="content has-text-left">
+                                        <p>
+                                            Yes – Please call as soon as possible if you are experiencing an urgent medical matter 
+                                            that needs to be evaluated by our practice. We will do our best to fit you into the schedule 
+                                            and see you as soon as we can. We are here to help you! If you are experiencing a true medical 
+                                            emergency – please call 911 or go to the nearest emergency room. <br><br>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="media-right">
+                                    <span class="has-text-grey-light"><i class="fa fa-comments"></i> 0</span>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="post has-text-left">
+                            <h4>Who do I contact in the event of an urgent matter?</h4>
+                            <div class="media">
+                                <div class="media-left">
+                                   
+                                </div>
+                                <div class="media-content">
+                                    <div class="content has-text-left">
+                                        <p>
+                                            Call 917-704-6690 and have a provider paged if you have a medical question that
+                                            needs to be answered promptly and cannot wait until the next business day. We will 
+                                            endeavor to answer your inquiry as soon as possible. <br><br>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="media-right">
+                                    <span class="has-text-grey-light"><i class="fa fa-comments"></i> 13</span>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="post has-text-left">
+                            <h4>Will I be charged for a less than 24 hour cancelled appointment or if I “no-show”?</h4>
+                            <div class="media">
+                                <div class="media-left">
+                                    
+                                </div>
+                                <div class="media-content">
+                                    <div class="content has-text-left">
+                                        <p>
+                                            Yes – Every scheduled appointment occupies a time slot with a provider that 
+                                            could be utilized by another patient who is unwell or would like to undergo a 
+                                            comprehensive skin cancer screening examination. <br><br>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="media-right">
+                                    <span class="has-text-grey-light"><i class="fa fa-comments"></i> 2</span>
+                                </div>
+                            </div>
+                        </article>
+                    
+                    </div>
+                </div>
+                <!-- FORM -->
+                <div class="column is-one-third has-text-left">
+                    <div class = "is-size-3 has-text-centered"> <h1>Shoot us a question!</h1> </div>
+                    
+                    <form method="post" id="FAQ-form" >
+                        <fieldset>
+                            <div class="field">
+                                <label class="label">Name</label>
+                                <div class="control">
+                                    <input class="input is-medium" type="text" name="inputName" id="inputName">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Email</label>
+                                <div class="control">
+                                    <input class="input is-medium" type="text" name="inputEmail" id="inputEmail">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Question</label>
+                                <div class="control">
+                                    <textarea class="textarea is-medium" name="inputQuery" id="inputQuery"></textarea>
+                                </div>
+                            </div>
+                            <div class="control">
+                                <!-- <button type="button" class="button is-link is-fullwidth has-text-weight-medium is-medium is-success" onclick="storeData()">Send Question</button> -->
+                                <button type="submit" class="button is-link is-fullwidth has-text-weight-medium is-medium is-success">Send Question</button>
+                            </div>
+                        </fieldset>
+                    </form>
+
+                </div>
+                <!-- END FORM -->
+                
+            </div>
+        </section>
+
+  </div>
+
+</body>
+
+<script>
+
+window.onload = () => {
+
+    document
+      .getElementById("FAQ-form")
+      .addEventListener("submit", (event) => {
+        event.preventDefault();
+        const email = event.target.inputEmail.value;
+        const question = event.target.inputQuery.value;
+        const name = event.target.inputName.value;
+
+        fetch('/insert_data', {
+                method: 'POST',
+                headers: {
+                'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    inputName : name,//'TEST',
+                    inputEmail : email, //'justanotheremail@email.com',
+                    inputQuery : question//'what is this?'
+                    }
+                ) // add the users ID token here
+                }).then((res) => {
+                  if (res.status==200) { 
+                    console.log('FAQ sent'); 
+                  }
+                  else {
+                    console.log('Failed to send Question.')
+                  }
+                });
+        
+        fetch('/get_data', {
+                method: 'POST',
+                headers: {
+                'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    collectionName : 'faq',//'TEST',
+                    documentId : 'test23', //'justanotheremail@email.com',
+                    }
+                ) // add the users ID token here
+                }).then(res => res.json())
+                .then((res) =>{
+                  
+                    console.log('tring to get data'); 
+                    console.log(res.collection_name);
+                    console.log(res.document_id);
+                    console.log(res.req_data.email);
+                });
+        
+        
+    
+      });
+};
+</script>
+
+<!-- <%- include('../partials/footer') %> -->
+
+</html>
