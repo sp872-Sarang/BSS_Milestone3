@@ -1,3 +1,5 @@
+// import { getAnalytics } from "firebase/analytics";
+
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -6,6 +8,10 @@ const admin = require("firebase-admin");
 const app = express();
 const port = process.env.PORT || 8080;
 const functions = require("firebase-functions");
+
+
+// Initialize Analytics and get a reference to the service
+// const analytics = getAnalytics(app);
 
 // CS5356 TODO #2
 // Uncomment this next line after you've created
@@ -142,12 +148,45 @@ async function storeData(req){
   })
   .then(function() {console.log("Document successfully written!");})
   .catch(function(error) {console.error("Error writing document: ", error);});
-  }
+
+  // db.collection('bookings').doc(uuid).set({
+  //   name: req.body.inputName.toString(),
+  //   email: req.body.inputEmail.toString(),
+  //   time: req.body.inputTime.toString(),
+  //   service: req.body.inputService.toString(),
+  //   })
+  //   .then(function() {console.log("Document successfully written!");})
+  //   .catch(function(error) {console.error("Error writing document: ", error);});
+    }
+
+
+  
+  
+  async function storeData_bookings(req){
+
+  
+    uuid = req.body.inputEmail.toString()
+  
+    const writeResult = await
+    db.collection('bookings').doc(uuid).set({
+    name: req.body.inputName.toString(),
+    email: req.body.inputEmail.toString(),
+    time: req.body.inputTime.toString(),
+    service: req.body.inputService.toString(),
+    })
+    .then(function() {console.log("Document successfully written!");})
+    .catch(function(error) {console.error("Error writing document: ", error);});
+    }
 
 app.post('/insert_data', async (request,response) =>{
   var insert = await storeData(request);
   response.sendStatus(200);
   });
+
+  app.post('/book-data', async (request,response) =>{
+    var insertx = await storeData_bookings(request);
+    response.sendStatus(200);
+    });
 
 async function getFirestore(req){
 
