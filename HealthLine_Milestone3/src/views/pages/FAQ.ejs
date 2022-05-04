@@ -152,10 +152,9 @@
 <script>
 
 window.onload = () => {
-
-    document
-      .getElementById("FAQ-form")
-      .addEventListener("submit", (event) => {
+    form =  document.getElementById("FAQ-form");
+   
+      form.addEventListener("submit", (event) => {
         event.preventDefault();
         const email = event.target.inputEmail.value;
         const question = event.target.inputQuery.value;
@@ -180,27 +179,8 @@ window.onload = () => {
                     console.log('Failed to send Question.')
                   }
                 });
-        
-        fetch('/get_data', {
-                method: 'POST',
-                headers: {
-                'Content-Type':'application/json'
-                },
-                body: JSON.stringify({
-                    collectionName : 'faq',//'TEST',
-                    documentId : 'test23', //'justanotheremail@email.com',
-                    }
-                ) // add the users ID token here
-                }).then(res => res.json())
-                .then((res) =>{
-                  
-                    console.log('tring to get data'); 
-                    console.log(res.collection_name);
-                    console.log(res.document_id);
-                    console.log(res.req_data.email);
-                });
-        
-        
+         
+        form.reset();
     
       });
 };

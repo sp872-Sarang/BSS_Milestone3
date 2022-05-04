@@ -13,7 +13,17 @@
     <link rel="stylesheet" type="text/css" href="../css/admin.css">
 </head>
 
+
+
 <body>
+    <div id="navbarMenu" class="navbar-menu">
+        <div class="navbar-end">
+          <a href="/dashboard" class="navbar-item">
+            <%= user.email %>
+            
+          </a>
+        </div>
+      </div>
 
     <section class="section has-background-primary">
         <div class="container">
@@ -41,6 +51,7 @@
                   </span>
                 </a>
                             </header>
+                           
                             <div class="card-table">
                                 <div class="content">
                                     <table class="table is-fullwidth is-striped">
@@ -48,12 +59,14 @@
                                             <tr>
                                                 <td width="5%"><i class="fa fa-bell-o"></i></td>
                                                 <td>07:00 AM</td>
-                                                <td class="level-right"><a class="button is-small is-primary" href="#">Book</a></td>
+                                                <td class="level-right" id="button1"><a class="button is-small is-primary" href="#">Available</a></td>
+                                           
                                             </tr>
                                             <tr>
                                                 <td width="5%"><i class="fa fa-bell-o"></i></td>
                                                 <td>08:00 AM</td>
-                                                <td class="level-right"><a class="button is-small is-primary" href="#">Book</a></td>
+                                                <td class="level-right" id="button2"><a class="button is-small is-primary" href="#">Available</a></td>
+                                               
                                             </tr>
                                             <tr>
                                                 <td width="5%"><i class="fa fa-bell-o"></i></td>
@@ -63,7 +76,8 @@
                                             <tr>
                                                 <td width="5%"><i class="fa fa-bell-o"></i></td>
                                                 <td>10:00 AM</td>
-                                                <td class="level-right"><a class="button is-small is-primary" href="#">Book</a></td>
+                                                <td class="level-right" id="button3"><a class="button is-small is-primary" href="#">Available</a></td>
+                                              
                                             </tr>
                                             <tr>
                                                 <td width="5%"><i class="fa fa-bell-o"></i></td>
@@ -95,14 +109,20 @@
                               
                               <div class="buttons">
                                 <button class="button is-info is-light">Dental</button>
-                                <button class="button is-success is-light">Nutrition</button>
-                                <button class="button is-warning is-light">Dermatology</button>
-                                <button class="button is-danger is-light"> COVID-19 </button>
-                                <button class="button is-link is-light"> Pediatrics </button>
+                            
+                                <button class="button is-success is-light" >Nutrition</button>
+                               
+                                <button  class="button is-warning is-light">Dermatology</button>
+                             
+                                <button  class="button is-danger is-light"> COVID-19 </button>
+                               
+                                <button  class="button is-link is-light" > Pediatrics </button>
+                                
                                 <button class="button is-primary is-light">Physiotherapy</button>
                                 
                               </div>
                         </div>
+                  
                         <div class="card">
                             <header class="card-header">
                                 <p class="card-header-title">
@@ -116,10 +136,8 @@
                             </header>
                             <div class="card-content">
                                 <div class="content">
-                                    <div class="control has-icons-left has-icons-right">
-                                           - Tomorrow 11:00 AM; Dermatology <br>
-                                           - Tomorrow 02:00 PM; Nutrition <br>
-                                           - Tomorrow 04:00 PM; Dental
+                                    <div id="myData" class="control has-icons-left has-icons-right">
+                                         
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +147,168 @@
             </div>
         </div>
     </div>
-    <script async type="text/javascript" src="../js/bulma.js"></script>
+
+    <!-- FORM -->
+    <div class="columns is-centered">
+    <div class="column is-one-third has-text-left">
+        <div class = "is-size-3 has-text-centered"> <h1> Make a booking! </h1> </div>
+        
+        <form method="post" id="booking-form" >
+            <fieldset>
+                <div class="field">
+                    <label class="label">Name</label>
+                    <div class="control">
+                        <input class="input is-medium" type="text" name="inputName" id="inputName">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control">
+                        <input class="input is-medium" type="text" name="inputEmail" id="inputEmail">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label"> Time (Check available slots above) </label>
+                    <div class="control">
+                        <input class="input is-medium" name="inputTime" id="inputTime">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Which service do you want? (Check services available above)</label>
+                    <div class="control">
+                        <input class="input is-medium" name="inputService" id="inputService">
+                    </div>
+                </div>
+                <div class="control">
+                    <!-- <button type="button" class="button is-link is-fullwidth has-text-weight-medium is-medium is-success" onclick="storeData()">Send Question</button> -->
+                    <button type="submit" id="hurra" class="button is-link is-fullwidth has-text-weight-medium is-medium is-success"> Confirm booking </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    </div>
+    <!-- END FORM -->
+
+    <!-- <script async type="text/javascript" src="../js/bulma.js"></script> -->
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-auth-compat.js"></script>
+    
+    <script>
+    
+    //   window.onload = () => {
+       
+    // };
+      
+
+   
+
+    window.onload = () => {
+
+        var userData = <%- JSON.stringify( user) %>
+        console.log(userData);
+
+     const firebaseConfig = {
+      apiKey: "AIzaSyD_DkX4PI8irluZXH1Eg-BQC5CBRi3d8x4",
+      authDomain: "healthline-9cd87.firebaseapp.com",
+      projectId: "healthline-9cd87",
+      storageBucket: "healthline-9cd87.appspot.com",
+      messagingSenderId: "212046435096",
+      appId: "1:212046435096:web:9c60d25ede9c48ee2f446d"
+    };
+        //Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        app.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+
+
+        form = document.getElementById("booking-form");
+           form.addEventListener("submit", (event) => {
+                event.preventDefault();
+                alert("You will be charged $50 for your visit per service.");
+                const email = event.target.inputEmail.value;
+                const time = event.target.inputTime.value;
+                const service  = event.target.inputService.value;
+                const name = event.target.inputName.value;
+        
+                fetch('/book-data', {
+                        method: 'POST',
+                        headers: {
+                        'Content-Type':'application/json'
+                        },
+                        body: JSON.stringify({
+                            inputName : name,//'TEST',
+                            inputEmail : email, //'justanotheremail@email.com',
+                            inputTime : time,
+                            inputService : service
+                            }
+                        ) // add the users ID token here
+                        }).then((res) => {
+                          if (res.status==200) { 
+                            console.log('Booking done!'); 
+                          }
+                          else {
+                            console.log('Booking Failed.')
+                          }
+                        });
+                        form.reset();
+                        createfn(event, userData);
+              });
+            
+              
+        };
+
+
+                // const form = document.getElementById('booking-form');
+                // form.addEventListener('submit', function handleSubmit(event) {
+                // event.preventDefault();
+                // // 👇️ Send data to server here
+                // // 👇️ Reset form here
+                // form.reset();
+                // });
+
+
+        // Displaying
+        // document.getElementById("hurra").addEventListener("click", createfn, false);
+
+
+
+        function createfn(event, userData)
+{
+        
+
+            fetch('/get_data', {
+            method: 'POST',
+            headers: {
+            'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                collectionName : 'bookings',//'TEST',
+                
+                }
+            ) // add the users ID token here
+            }).then(res => res.json())
+            .then((res) =>{
+
+                console.log('get data');
+                console.log(res);
+                // console.log(user.email);
+                
+            var mainContainer = document.getElementById("myData");
+            // const user = app.auth().currentUser;
+           
+            for (var i = 0; i < res.req_data.length; i++) { 
+                console.log(userData.email);
+                if(res.req_data[i].email == userData.email) {   
+                    mainContainer.innerHTML += '<br>' + "Appointment: " + res.req_data[i].service + "; " + res.req_data[i].time
+                    console.log("Appointment:" + res.req_data[i].service);
+                    }
+            }
+             });
+}
+
+
+        </script>
+
 </body>
 
 </html>
