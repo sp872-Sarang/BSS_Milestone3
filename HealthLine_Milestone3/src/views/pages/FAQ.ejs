@@ -150,7 +150,6 @@
 </body>
 
 <script>
-
 window.onload = () => {
     form =  document.getElementById("FAQ-form");
    
@@ -159,7 +158,6 @@ window.onload = () => {
         const email = event.target.inputEmail.value;
         const question = event.target.inputQuery.value;
         const name = event.target.inputName.value;
-
         fetch('/insert_data', {
                 method: 'POST',
                 headers: {
