@@ -81,20 +81,18 @@
                     <div class="tile is-ancestor has-text-centered">
                         <div class="tile is-parent">
                             <article class="tile is-child box">
-                                <p class="title">500</p>
-                                <p class="subtitle">Logins</p>
-                            </article>
-                        </div>
-                        <div class="tile is-parent">
-                            <article class="tile is-child box">
-                                <p class="title">200</p>
-                                <p class="subtitle">Bookings</p>
-                            </article>
-                        </div>
-                        <div class="tile is-parent">
-                            <article class="tile is-child box">
-                                <p class="title">$600,000</p>
+                                <p id = "myData4" class="title">
+                                    <!-- <div id="myData3"></div> -->
+                                </p>
                                 <p class="subtitle">Revenue</p>
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p id = "myData3" class="title">
+                                    <!-- <div id="myData3"></div> -->
+                                </p>
+                                <p class="subtitle">Bookings</p>
                             </article>
                         </div>
                     </div>
@@ -116,28 +114,14 @@
                                 <div class="content">
                                     <table class="table is-fullwidth is-striped">
                                         <tbody>
-                                            <tr>
-                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                                <td>10:00 AM- Meeting with Linda Matthews- Covid 19</td>
-                                                <!-- <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td> -->
-                                            </tr>
-                                            <tr>
-                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                                <td>12:00 PM - Meeting with Ryan Hardman - Nutrition</td>
-                                                <!-- <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td> -->
-                                            </tr>
-                                            <tr>
-                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                                <td>3:00 PM - Meeting with Robert Sinclair - Dermatology</td>
-                                                <!-- <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td> -->
-                                            </tr>
+                                            <div id="myData2"></div>
+                                                <!-- <button type="button" class="button is-link is-fullwidth has-text-weight-medium is-medium is-success" onclick="storeData()">Send Question</button> -->
+                                                <button type="submit" id="bookings" class="button is-link is-fullwidth has-text-weight-medium is-medium is-success">Bookings</button>
+                                            </div>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            <footer class="card-footer">
-                                <a href="#" class="card-footer-item">View All</a>
-                            </footer>
                         </div>
                     </div>
                     <div class="column is-6">
@@ -220,6 +204,39 @@
 <!-- import { collection, getDocs } from "firebase/firestore"; -->
 <script>
 
+window.onload = () => {
+    fetch('/get_data', {
+    method: 'POST',
+    headers: {
+    'Content-Type':'application/json'
+    },
+    body: JSON.stringify({
+        collectionName : 'bookings',//'TEST',
+        // documentId : "test23", //'justanotheremail@email.com',
+        }
+    ) // add the users ID token here
+    }).then(res => res.json())
+    .then((res) =>{
+
+        console.log('tring to get data');
+        console.log(res);
+        console.log(res);
+        console.log(res);
+    var mainContainer3 = document.getElementById("myData3");
+    var mainContainer4 = document.getElementById("myData4");
+    mainContainer3.innerHTML = res.req_data.length;
+    var temp = parseInt(res.req_data.length) * 50;
+    mainContainer4.innerHTML = "$" + temp;
+    console.log(res.req_data.length);
+    });
+
+
+
+
+
+};
+
+
 
 // const documentReferences = admin.firestore()
 //         .collection('faq')
@@ -273,10 +290,53 @@ function createfn()
             var mainContainer = document.getElementById("myData");
             for (var i = 0; i < res.req_data.length; i++) {
                 var div = document.createElement("div");
-                mainContainer.innerHTML += '<br>' + "query:" + res.req_data[i].query
+                mainContainer.innerHTML += '<br>' + res.req_data[i].query
                 console.log("query:" + res.req_data[i].query);
                 //tr.innerHTML = "query:"; //+ res[i].inputQuery;
                 mainContainer.appendChild(div);
+            }
+            });
+}
+
+document.getElementById("bookings").addEventListener("click", createfn2, false);
+
+function createfn2()
+{
+            // const snapshot = await db.collection('faq').get();
+            // console.log("testing here");
+            //
+            // // Print the ID and contents of each document
+            // snapshot.forEach(doc => {
+            // console.log(doc.id, ' => ', doc.data());
+            // });
+
+            fetch('/get_data', {
+            method: 'POST',
+            headers: {
+            'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                collectionName : 'bookings',//'TEST',
+                // documentId : "test23", //'justanotheremail@email.com',
+                }
+            ) // add the users ID token here
+            }).then(res => res.json())
+            .then((res) =>{
+
+                console.log('tring to get data');
+                console.log(res);
+                console.log(res.collection_name);
+                console.log(res.document_id);
+                console.log(res);
+                console.log(res.req_data.email);
+                console.log(res);
+            var mainContainer2 = document.getElementById("myData2");
+            for (var i = 0; i < res.req_data.length; i++) {
+                var div = document.createElement("div");
+                mainContainer2.innerHTML += '<br>' + res.req_data[i].name + " "  + res.req_data[i].email + " " + res.req_data[i].time + " " + res.req_data[i].service;
+                console.log(res.req_data[i].name + " " + res.req_data[i].email + " " + res.req_data[i].time + " " + res.req_data[i].service);
+                //tr.innerHTML = "query:"; //+ res[i].inputQuery;
+                mainContainer2.appendChild(div);
             }
             });
 }
